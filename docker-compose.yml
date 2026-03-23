@@ -1,0 +1,46 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: app-mysql
+    environment:
+      MYSQL_DATABASE: invest
+      MYSQL_ROOT_PASSWORD: root1234
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app1234
+    ports:
+      - "3307:3306"  # 로컬 MySQL과 포트 충돌 방지
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-net
+
+  backend:
+    build: ./backend
+    container_name: app-backend
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/invest?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: app
+      SPRING_DATASOURCE_PASSWORD: app1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    networks:
+      - app-net
+
+  frontend:
+    build: ./frontend
+    container_name: app-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:
+
+volumes:
+  mysql-data:
