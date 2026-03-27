@@ -51,9 +51,7 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
     script.type = 'text/javascript';
     script.async = true;
 
-    // ✅ jsonStringify로 깔끔하게 넣기 (여기서 가장 많이 깨짐)
     script.innerHTML = JSON.stringify(config);
-
 
     container.current.innerHTML = '';
     container.current.appendChild(script);
