@@ -54,13 +54,8 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
     // ✅ jsonStringify로 깔끔하게 넣기 (여기서 가장 많이 깨짐)
     script.innerHTML = JSON.stringify(config);
 
-    const containerDiv = document.createElement('div');
-    containerDiv.id = containerId;
-    containerDiv.style.width = '100%';
-    containerDiv.style.height = 'calc(100% - 32px)';
 
     container.current.innerHTML = '';
-    container.current.appendChild(containerDiv);
     container.current.appendChild(script);
 
     const copyrightDiv = document.createElement('div');

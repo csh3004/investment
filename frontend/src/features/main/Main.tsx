@@ -78,7 +78,7 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
           </div>
 
           {/* 현재가 차트 영역 */}
-          <div className="w-full h-50 bg-gray-900 rounded-xl mb-6 flex items-center justify-center border-2 border-dashed border-gray-700">
+          <div className="w-full h-[500px] bg-gray-900 rounded-xl mb-6 flex items-start justify-center border-2 border-dashed border-gray-700 p-4">
             <CoinChart symbol={selectedCoin} />
           </div>
 
