@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CoinChart from '../../components/chart/CoinChart';
 
 interface StockData {
   name: string;
@@ -77,8 +78,8 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
           </div>
 
           {/* 현재가 차트 영역 */}
-          <div className="w-full h-64 bg-gray-900 rounded-xl mb-6 flex items-center justify-center border-2 border-dashed border-gray-700">
-            <span className="text-gray-500 text-sm">차트 영역</span>
+          <div className="w-full h-50 bg-gray-900 rounded-xl mb-6 flex items-center justify-center border-2 border-dashed border-gray-700">
+            <CoinChart symbol={selectedCoin} />
           </div>
 
           {/* 가격 정보 테이블 */}
