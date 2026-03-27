@@ -1,82 +1,91 @@
-// CoinChart.tsx 수정
-import { createChart, LineSeries } from 'lightweight-charts';
-import { useEffect, useRef, useState } from 'react';
+// components/chart/CoinChart.tsx
+import React, { useEffect, useRef, memo } from 'react';
 
-interface PriceData {
-  time: string;
-  value: number;
+interface CoinChartProps {
+  symbol: string; // 예: "BTC", "ETH"
 }
 
-const CoinChart: React.FC<{ symbol: string; height?: number }> = ({ symbol, height = 320 }) => {
-  const chartContainerRef = useRef<HTMLDivElement>(null);
-  const [priceData, setPriceData] = useState<PriceData[]>([]);
-
-  // CoinGecko API 가격 가져오기
-  const fetchPriceData = async () => {
-    try {
-      const coinId = symbol.toLowerCase();  // BTC → btc
-      const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=krw&days=1&interval=hourly`
-      );
-      const data = await response.json();
-      
-      const prices = data.prices.map(([timestamp, price]: [number, number]) => ({
-        time: new Date(timestamp).toISOString().split('T')[0],
-        value: price,
-      }));
-      console.log(prices);
-      setPriceData(prices.slice(-20));  // 최근 20개만
-    } catch (error) {
-      console.error('가격 데이터 오류:', error);
-      // mock 데이터
-      setPriceData([
-        { time: '2026-03-27', value: 69200 },
-        { time: '2026-03-28', value: 69400 },
-      ]);
-    }
-  };
+const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
+  const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchPriceData();  // 초기 데이터 로드
-  }, [symbol]);
+    if (!symbol || !container.current) return;
 
-  useEffect(() => {
-    const element = chartContainerRef.current;
-    if (!element || priceData.length === 0) return;
+    const scriptId = 'tradingview-advanced-chart-script';
+    const containerId = 'tradingview-advanced-chart-container';
 
-    const chart = createChart(element, {
-      width: element.clientWidth,
-      height,
-      layout: { 
-        background: { color: '#1a1a2e' }, 
-        textColor: '#d1d4dc' 
-      },
-      grid: { 
-        vertLines: { color: '#374151' }, 
-        horzLines: { color: '#374151' } 
-      },
-    });
+    // 기존 스크립트/컨테이너 제거
+    const oldScript = document.getElementById(scriptId);
+    const oldContainer = document.getElementById(containerId);
+    if (oldScript) oldScript.remove();
+    if (oldContainer) oldContainer.remove();
 
-    const lineSeries = chart.addSeries(LineSeries);
-    lineSeries.setData(priceData);
+    const tvSymbol = `BINANCE:${symbol.toUpperCase()}USDT`; // 예: BINANCE:BTCUSDT
 
-    const handleResize = () => {
-      chart.applyOptions({ width: element.clientWidth });
+    const config = {
+      autosize: true,
+      symbol: tvSymbol,
+      interval: 'D',
+      timezone: 'Etc/UTC',
+      theme: 'dark',
+      style: '1',
+      locale: 'en',
+      allow_symbol_change: true,
+      hide_side_toolbar: true,
+      hide_top_toolbar: false,
+      hide_legend: false,
+      hide_volume: false,
+      hotlist: false,
+      save_image: true,
+      backgroundColor: '#0F0F0F',
+      gridColor: 'rgba(242, 242, 242, 0.06)',
+      watchlist: [],
+      withdateranges: false,
+      compareSymbols: [],
+      studies: [],
     };
-    window.addEventListener('resize', handleResize);
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+    script.type = 'text/javascript';
+    script.async = true;
+
+    // ✅ jsonStringify로 깔끔하게 넣기 (여기서 가장 많이 깨짐)
+    script.innerHTML = JSON.stringify(config);
+
+    const containerDiv = document.createElement('div');
+    containerDiv.id = containerId;
+    containerDiv.style.width = '100%';
+    containerDiv.style.height = 'calc(100% - 32px)';
+
+    container.current.innerHTML = '';
+    container.current.appendChild(containerDiv);
+    container.current.appendChild(script);
+
+    const copyrightDiv = document.createElement('div');
+    copyrightDiv.className = 'tradingview-widget-copyright';
+    copyrightDiv.innerHTML = `
+      <a href="https://www.tradingview.com" rel="noopener nofollow" target="_blank">
+        <span class="blue-text">Track all markets</span>
+      </a>
+      <span class="trademark"> by TradingView</span>
+    `;
+    container.current.appendChild(copyrightDiv);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      chart.remove();
+      const el = document.getElementById(scriptId);
+      if (el) el.remove();
     };
-  }, [priceData]);
+  }, [symbol]);
 
   return (
-    <div 
-      ref={chartContainerRef} 
-      className="w-full h-full rounded-xl border border-gray-700"
+    <div
+      ref={container}
+      className="tradingview-widget-container"
+      style={{ height: '100%', width: '100%' }}
     />
   );
 };
 
-export default CoinChart;
+export default memo(CoinChart);
