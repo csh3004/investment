@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CoinChart from '../../components/chart/CoinChart';
+import { useNavigate } from 'react-router-dom';
 import MainHeader from '../../components/Header';
 
 interface StockData {
@@ -11,20 +12,21 @@ interface StockData {
 
 const MainForm: React.FC = () => {
   const [selectedCoin, setSelectedCoin] = useState('BTC');
+  const navigate = useNavigate();
   const [stocks, setStocks] = useState<StockData[]>([]);
-  
+
   const [highPrice24, setHighPrice24] = useState("100000");
   const [lowPrice24, setLowPrice24] = useState("80000");
   const [tradeAmount, setTradeAmount] = useState("12345");
 
-const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
-  setSelectedCoin(coinName);
-  console.log('🔄 변경:', coinName);
-  
-  setHighPrice24(`${coinName} setHighPrice24 price (API 연동 예정)`);
-  setLowPrice24(`${coinName} setLowPrice24 (API 연동 예정)`);
-  setTradeAmount(`${coinName} setTradeAmount (API 연동 예정)`);
-};
+  const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
+    setSelectedCoin(coinName);
+    console.log('🔄 변경:', coinName);
+
+    setHighPrice24(`${coinName} setHighPrice24 price (API 연동 예정)`);
+    setLowPrice24(`${coinName} setLowPrice24 (API 연동 예정)`);
+    setTradeAmount(`${coinName} setTradeAmount (API 연동 예정)`);
+  };
 
   // mock 데이터
   useEffect(() => {
@@ -48,7 +50,7 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
     <div className="min-h-screen bg-gray-900 text-white p-6">
       {/* 상단 헤더 */}
       <div className="flex items-center justify-between mb-6">
-          <MainHeader />
+        <MainHeader />
       </div>
 
       {/* 메인 콘텐츠 */}
@@ -88,7 +90,7 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
         {/* 오른쪽 패널 */}
         <div className="bg-gray-800 rounded-2xl p-6 space-y-4">
           <h3 className="font-bold text-lg">24시간 상승 TOP 5</h3>
-          
+
           {/* 상승 순위 테이블 */}
           <div className="space-y-2">
             {stocks.slice(0, 5).map((stock, index) => (
@@ -115,8 +117,8 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
       <div className="bg-gray-800 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-lg">코인 현황</h3>
-          <select 
-            value={selectedCoin} 
+          <select
+            value={selectedCoin}
             onChange={(e) => changeCoin(e.target.value)}
             className="bg-gray-700 px-3 py-1 rounded text-sm"
           >
@@ -142,7 +144,7 @@ const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
                 <tr key={stock.name} className="border-b border-gray-700/50 hover:bg-gray-700">
                   <td className="py-3 font-medium">{stock.name}</td>
                   <td className="text-right py-3">{formatPrice(stock.price)}</td>
-                  <td 
+                  <td
                     className={`text-right py-3 font-medium ${getChangeClass(stock.change)}`}
                   >
                     {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)}
