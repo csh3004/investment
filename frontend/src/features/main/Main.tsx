@@ -66,9 +66,9 @@ useEffect(() => {
           };
         }
         if(displayName === selectedCoin) {
-          setHighPrice24(`${displayName} 24h 최고: ${data.h}`);
-          setLowPrice24(`${displayName} 24h 최저: ${data.l}`);
-          setTradeAmount(`${displayName} 24h 거래량: ${data.v}`);
+          setHighPrice24(`${displayName} 24h 최고: ${parseInt(data.h)} 원`);
+          setLowPrice24(`${displayName} 24h 최저: ${parseInt(data.l)} 원`);
+          setTradeAmount(`${displayName} 24h 거래량: ${parseInt(data.v)} 원`);
         }
         return updated;
       });
