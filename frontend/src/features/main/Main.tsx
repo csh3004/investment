@@ -11,12 +11,12 @@ interface StockData {
 }
 
 const MainForm: React.FC = () => {
-  const [selectedCoin, setSelectedCoin] = useState('BTC');
+  const [selectedCoin, setSelectedCoin] = useState('');
   const [stocks, setStocks] = useState<StockData[]>([
-      {name: 'BTC', price: 69250, change: 1250, changePercent: 1.84 },
-      { name: 'ETH', price: 2580, change: 45, changePercent: 1.77 },
-      { name: 'SOL', price: 168, change: -2.5, changePercent: -1.47 },
-      { name: 'XRP', price: 0.58, change: 0.01, changePercent: 1.76 }
+      { name: 'BTC', price: 0, change: 0, changePercent: 0 },
+      { name: 'ETH', price: 0, change: 0, changePercent: 0 },
+      { name: 'SOL', price: 0, change: 0, changePercent: 0 },
+      { name: 'XRP', price: 0, change: 0, changePercent: 0 }
     ]);
   
 
@@ -35,49 +35,51 @@ const MainForm: React.FC = () => {
     setTradeAmount(`${coinName} setTradeAmount (API 연동 예정)`);
   };
 
-useEffect(() => {
-  const symbols = ['btcusdt', 'ethusdt', 'solusdt', 'xrpusdt'];
-  const streamNames = symbols.map(s => `${s}@ticker`).join('/');
-  
-  const ws = new WebSocket(
-    `wss://stream.binance.com:9443/stream?streams=${streamNames}`
-  );
-
-  ws.onmessage = (event) => {
-    const streamData = JSON.parse(event.data);
-    const data = streamData.data; // Binance stream 구조
+  useEffect(() => {
+    //fix: 미리 BTC 해주면 값 변하면서 랜더링 꼬임 현상 발생. 뒤에 localStorage에 저장해두고 걔로 설정 해주면 될 듯 없으면 BTC
+    setSelectedCoin('BTC');
+    const symbols = ['btcusdt', 'ethusdt', 'solusdt', 'xrpusdt'];
+    const streamNames = symbols.map(s => `${s}@ticker`).join('/');
     
-    const symbolMap: Record<string, string> = {
-      BTCUSDT: 'BTC',
-      ETHUSDT: 'ETH',
-      SOLUSDT: 'SOL',
-      XRPUSDT: 'XRP',
+    const ws = new WebSocket(
+      `wss://stream.binance.com:9443/stream?streams=${streamNames}`
+    );
+
+    ws.onmessage = (event) => {
+      const streamData = JSON.parse(event.data);
+      const data = streamData.data; // Binance stream 구조
+      
+      const symbolMap: Record<string, string> = {
+        BTCUSDT: 'BTC',
+        ETHUSDT: 'ETH',
+        SOLUSDT: 'SOL',
+        XRPUSDT: 'XRP',
+      };
+
+      const symbol = data.s; // 'BTCUSDT' 등
+      const displayName = symbolMap[symbol]; // 이제 타입 안전
+
+      if (displayName) {
+        setStocks(prev => {
+          const updated = [...prev];
+          const idx = updated.findIndex(s => s.name === displayName);
+          if (idx !== -1) {
+            updated[idx] = {
+              name: displayName,
+              price: parseFloat(data.c),
+              change: parseFloat(data.p),
+              changePercent: parseFloat(data.P),
+            };
+          }
+          if(displayName === selectedCoin) {
+            setHighPrice24(`${displayName} 24h 최고: ${parseInt(data.h)} 원`);
+            setLowPrice24(`${displayName} 24h 최저: ${parseInt(data.l)} 원`);
+            setTradeAmount(`${displayName} 24h 거래량: ${parseInt(data.v)} 원`);
+          }
+          return updated;
+        });
+      }
     };
-
-    const symbol = data.s; // 'BTCUSDT' 등
-    const displayName = symbolMap[symbol]; // 이제 타입 안전
-
-    if (displayName) {
-      setStocks(prev => {
-        const updated = [...prev];
-        const idx = updated.findIndex(s => s.name === displayName);
-        if (idx !== -1) {
-          updated[idx] = {
-            name: displayName,
-            price: parseFloat(data.c),
-            change: parseFloat(data.p),
-            changePercent: parseFloat(data.P),
-          };
-        }
-        if(displayName === selectedCoin) {
-          setHighPrice24(`${displayName} 24h 최고: ${parseInt(data.h)} 원`);
-          setLowPrice24(`${displayName} 24h 최저: ${parseInt(data.l)} 원`);
-          setTradeAmount(`${displayName} 24h 거래량: ${parseInt(data.v)} 원`);
-        }
-        return updated;
-      });
-    }
-  };
 
   ws.onerror = (err) => console.error('WebSocket 오류:', err);
 
