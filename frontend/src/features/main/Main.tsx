@@ -20,7 +20,7 @@ const MainForm: React.FC = () => {
     ]);
   
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [highPrice24, setHighPrice24] = useState("100000");
   const [lowPrice24, setLowPrice24] = useState("80000");
@@ -147,6 +147,17 @@ useEffect(() => {
                   </span>
                   <span className="font-medium">{stock.name}</span>
                 </div>
+
+                {/* 뒤에 코인 이미지 등록후 변경 */}
+                {/* <div className="flex items-center gap-3">
+                  <img
+                    src={rankImages[index]}
+                    alt={`${index + 1}위`}
+                    className="w-6 h-6 object-contain"
+                  />
+                  <span className="font-medium">{stock.name}</span>
+                </div> */}
+
                 <div className="text-right">
                   <div className="font-bold">{formatPrice(stock.price)}</div>
                   <div className={`text-xs ${getChangeClass(stock.change)}`}>
