@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from '../pages/login/'; // 상대 경로로 우선 작성 (에러 방지)
+import MainPage from '../pages/main';
 
 // 추후 만들 페이지들 (예시)
 // import MainPage from './pages/Main';
@@ -11,7 +13,7 @@ const App: React.FC = () => {
         <BrowserRouter>
             <Routes>
                 {/* 기본 경로: 메인 화면 (나중에 구현 시 연결) */}
-                <Route path="/" element={<div>메인 거래 화면 (준비 중)</div>} />
+                <Route path="/" element={<MainPage />} />
 
                 {/* 로그인 페이지 */}
                 <Route path="/login" element={<LogIn />} />
