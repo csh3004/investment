@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from '../pages/login/'; // 상대 경로로 우선 작성 (에러 방지)
+import LoginPage from '../pages/login/LogIn'; // 상대 경로로 우선 작성 (에러 방지)
 import MainPage from '../pages/main';
-
 
 // 추후 만들 페이지들 (예시)
 // import MainPage from './pages/Main';
