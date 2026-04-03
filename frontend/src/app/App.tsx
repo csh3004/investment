@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from '../pages/login/'; // 상대 경로로 우선 작성 (에러 방지)
 
 // 추후 만들 페이지들 (예시)
 // import MainPage from './pages/Main';
-// import SignupPage from './pages/Signup';
+import LogIn from '../pages/login/LogIn';
+import SignUp from '../pages/singup/SignUp';
 
 const App: React.FC = () => {
     return (
@@ -14,10 +14,10 @@ const App: React.FC = () => {
                 <Route path="/" element={<div>메인 거래 화면 (준비 중)</div>} />
 
                 {/* 로그인 페이지 */}
-                <Route path="/login" element={<LoginPage />} />
+                <Route path="/login" element={<LogIn />} />
 
-                {/* 회원가입 페이지 (나중에 구현) */}
-                <Route path="/signup" element={<div>회원가입 페이지 (준비 중)</div>} />
+                {/* 회원가입 페이지 */}
+                <Route path="/signup" element={<SignUp />} />
 
                 {/* 잘못된 경로로 들어오면 메인으로 리다이렉트 */}
                 <Route path="*" element={<Navigate to="/" replace />} />
