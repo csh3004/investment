@@ -1,224 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import CoinChart from '../../components/chart/CoinChart';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
 import MainHeader from '../../components/Header';
-
-interface StockData {
-  name: string;
-  price: number;
-  change: number;
-  changePercent: number;
-}
+import SelectedCoinPanel from '../../components/coin/SelectedCoinPanel';
+import CoinRankList from '../../components/coin/CoinRankList';
+import CoinStatusTable from '../../components/coin/CoinStatusTable';
+import { useCoinTicker } from '../../hooks/useCoinTicker';
 
 const MainForm: React.FC = () => {
   const [selectedCoin, setSelectedCoin] = useState('');
-  const [stocks, setStocks] = useState<StockData[]>([
-      { name: 'BTC', price: 0, change: 0, changePercent: 0 },
-      { name: 'ETH', price: 0, change: 0, changePercent: 0 },
-      { name: 'SOL', price: 0, change: 0, changePercent: 0 },
-      { name: 'XRP', price: 0, change: 0, changePercent: 0 }
-    ]);
-  
+  const { stocks } = useCoinTicker();
 
-  // const navigate = useNavigate();
+  const selectedStock = useMemo(
+    () => stocks.find((stock) => stock.name === selectedCoin),
+    [stocks, selectedCoin]
+  );
 
-  const [highPrice24, setHighPrice24] = useState("100000");
-  const [lowPrice24, setLowPrice24] = useState("80000");
-  const [tradeAmount, setTradeAmount] = useState("12345");
-
-  const changeCoin = (coinName: string) => {  // arrow function도 깔끔!
+  const changeCoin = (coinName: string) => {
     setSelectedCoin(coinName);
     console.log('🔄 변경:', coinName);
-
-    setHighPrice24(`${coinName} setHighPrice24 price (API 연동 예정)`);
-    setLowPrice24(`${coinName} setLowPrice24 (API 연동 예정)`);
-    setTradeAmount(`${coinName} setTradeAmount (API 연동 예정)`);
   };
 
   useEffect(() => {
-    //fix: 미리 BTC 해주면 값 변하면서 랜더링 꼬임 현상 발생. 뒤에 localStorage에 저장해두고 걔로 설정 해주면 될 듯 없으면 BTC
+    // 시발..... 이거 안해주면 처음에 번들 에러남.... 이유 모르겠음 ㅠㅠㅠ 미래의 나에게 맡긴다. ( 트뷰 렌더링 문제인듯 )
     setSelectedCoin('BTC');
-    const symbols = ['btcusdt', 'ethusdt', 'solusdt', 'xrpusdt'];
-    const streamNames = symbols.map(s => `${s}@ticker`).join('/');
-    
-    const ws = new WebSocket(
-      `wss://stream.binance.com:9443/stream?streams=${streamNames}`
-    );
+  }, []);
 
-    ws.onmessage = (event) => {
-      const streamData = JSON.parse(event.data);
-      const data = streamData.data; // Binance stream 구조
-      
-      const symbolMap: Record<string, string> = {
-        BTCUSDT: 'BTC',
-        ETHUSDT: 'ETH',
-        SOLUSDT: 'SOL',
-        XRPUSDT: 'XRP',
-      };
-
-      const symbol = data.s; // 'BTCUSDT' 등
-      const displayName = symbolMap[symbol]; // 이제 타입 안전
-
-      if (displayName) {
-        setStocks(prev => {
-          const updated = [...prev];
-          const idx = updated.findIndex(s => s.name === displayName);
-          if (idx !== -1) {
-            updated[idx] = {
-              name: displayName,
-              price: parseFloat(data.c),
-              change: parseFloat(data.p),
-              changePercent: parseFloat(data.P),
-            };
-          }
-          if(displayName === selectedCoin) {
-            setHighPrice24(`${displayName} 24h 최고: ${parseInt(data.h)} 원`);
-            setLowPrice24(`${displayName} 24h 최저: ${parseInt(data.l)} 원`);
-            setTradeAmount(`${displayName} 24h 거래량: ${parseInt(data.v)} 원`);
-          }
-          return updated;
-        });
-      }
-    };
-
-  ws.onerror = (err) => console.error('WebSocket 오류:', err);
-
-  return () => ws.close();
-}, [selectedCoin]);
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ko-KR').format(price);
-  };
-
-  const getChangeClass = (change: number) => {
-    return change >= 0 ? 'text-red-500' : 'text-blue-500';
-  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
-      {/* 상단 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <MainHeader />
       </div>
 
-      {/* 메인 콘텐츠 */}
       <div className="grid grid-cols-3 gap-6 mb-6">
-        {/* 왼쪽 패널 */}
-        <div className="bg-gray-800 rounded-2xl p-6 col-span-2">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-bold">{selectedCoin} / KRW</h2>
-            <div className="flex items-center gap-1 text-sm text-gray-400">
-              <span>24hr 변동률</span>
-              <span className="w-3 h-3 bg-green-400 rounded-full"></span>
-            </div>
-          </div>
+        <SelectedCoinPanel
+          selectedCoin={selectedCoin}
+          selectedStock={selectedStock}
+        />
 
-          {/* 현재가 차트 영역 */}
-          <div className="w-full h-[500px] bg-gray-900 rounded-xl mb-6 flex items-start justify-center border-2 border-dashed border-gray-700 p-4">
-            <CoinChart symbol={selectedCoin} />
-          </div>
-
-          {/* 가격 정보 테이블 */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-400">24h 최고</span>
-              <span className="font-bold">{highPrice24}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-400">24h 최저</span>
-              <span className="font-bold">{lowPrice24}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-400">24h 거래량</span>
-              <span className="font-bold">{tradeAmount}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* 오른쪽 패널 */}
-        <div className="bg-gray-800 rounded-2xl p-6 space-y-4">
-          <h3 className="font-bold text-lg">List</h3>
-          
-          {/* 상승 순위 테이블 */}
-          <div className="space-y-2">
-            {stocks.slice(0, 5).map((stock, index) => (
-              <div key={stock.name} onClick={() => changeCoin(stock.name)} className="flex items-center justify-between p-3 bg-gray-700/50 rounded-xl hover:bg-gray-700 transition-all">
-                <div className="flex items-center gap-3">
-                  <span className="w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center text-xs font-bold text-gray-900">
-                    {index + 1}
-                  </span>
-                  <span className="font-medium">{stock.name}</span>
-                </div>
-
-                {/* 뒤에 코인 이미지 등록후 변경 */}
-                {/* <div className="flex items-center gap-3">
-                  <img
-                    src={rankImages[index]}
-                    alt={`${index + 1}위`}
-                    className="w-6 h-6 object-contain"
-                  />
-                  <span className="font-medium">{stock.name}</span>
-                </div> */}
-
-                <div className="text-right">
-                  <div className="font-bold">{formatPrice(stock.price)}</div>
-                  <div className={`text-xs ${getChangeClass(stock.change)}`}>
-                    {stock.changePercent.toFixed(2)}%
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CoinRankList
+          stocks={stocks}
+          onSelectCoin={changeCoin}
+        />
       </div>
 
-      {/* 하단 테이블 */}
-      <div className="bg-gray-800 rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-lg">코인 현황</h3>
-          <select
-            value={selectedCoin}
-            onChange={(e) => changeCoin(e.target.value)}
-            className="bg-gray-700 px-3 py-1 rounded text-sm"
-          >
-            <option>BTC</option>
-            <option>ETH</option>
-            <option>SOL</option>
-          </select>
-        </div>
-
-        {/* 코인 테이블 */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-700">
-                <th className="text-left py-3">코인</th>
-                <th className="text-right py-3">현재가</th>
-                <th className="text-right py-3">변동</th>
-                <th className="text-right py-3">변동률</th>
-              </tr>
-            </thead>
-            <tbody>
-              {stocks.map((stock) => (
-                <tr key={stock.name} className="border-b border-gray-700/50 hover:bg-gray-700">
-                  <td className="py-3 font-medium">{stock.name}</td>
-                  <td className="text-right py-3">{formatPrice(stock.price)}</td>
-                  <td
-                    className={`text-right py-3 font-medium ${getChangeClass(stock.change)}`}
-                  >
-                    {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)}
-                  </td>
-                  <td className="text-right py-3">
-                    <span className={`font-medium ${getChangeClass(stock.change)}`}>
-                      {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <CoinStatusTable
+        stocks={stocks}
+        selectedCoin={selectedCoin}
+        onChangeCoin={changeCoin}
+      />
     </div>
   );
 };
