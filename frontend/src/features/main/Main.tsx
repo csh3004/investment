@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import MainHeader from '../../components/Header';
 import SelectedCoinPanel from '../../components/coin/SelectedCoinPanel';
 import CoinRankList from '../../components/coin/CoinRankList';
@@ -18,6 +18,12 @@ const MainForm: React.FC = () => {
     setSelectedCoin(coinName);
     console.log('🔄 변경:', coinName);
   };
+
+  useEffect(() => {
+    // 시발..... 이거 안해주면 처음에 번들 에러남.... 이유 모르겠음 ㅠㅠㅠ 미래의 나에게 맡긴다. ( 트뷰 렌더링 문제인듯 )
+    setSelectedCoin('BTC');
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
