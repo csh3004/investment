@@ -1,4 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 const MainHeader = function () {
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
     return (
         <>
             <div className="flex items-center gap-2">
@@ -13,7 +20,7 @@ const MainHeader = function () {
             <div className="flex items-center gap-2 text-sm">
                 <span>KRW</span>
                 <span className="w-8 h-6 bg-gray-700 rounded flex items-center justify-center cursor-pointer">T</span>
-                <span className="w-20 h-6 bg-gray-700 rounded px-2 flex items-center justify-center cursor-pointer">
+                <span className="w-20 h-6 bg-gray-700 rounded px-2 flex items-center justify-center cursor-pointer" onClick={handleLoginClick}>
                     로그인
                 </span>
             </div>
