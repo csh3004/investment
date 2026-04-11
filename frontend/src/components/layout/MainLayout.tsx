@@ -12,8 +12,8 @@ const MainLayout: React.FC<LayoutProps> = ({ children }) => {
          * text-gray-900 dark:text-white: 회색 900 텍스트 (기본), 다크모드일 때 흰색 텍스트
          * transition-colors duration-300: 색상 전환 효과 (300ms)
          */
-        <div className="min-h-screen bg-white drak:bg-[#121212] text-gray-900 dark:text-white transition-colors duration-300">
-            <main className="flex items-center justify-center p-4">
+        <div className="min-h-screen w-full flex flex-col bg-white drak:bg-[#121212] text-gray-900 dark:text-white transition-colors duration-300">
+            <main className="flex items-center justify-center p-0">
                 {children}
             </main>
         </div>
