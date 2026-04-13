@@ -25,15 +25,15 @@ const TransationForm: React.FC = () => {
 
       <div className="grid grid-cols-3 gap-6 mb-6">
         <SelectedCoinPanel
-          selectedCoin={selectedCoin}
-          selectedStock={selectedStock}
+            selectedCoin={selectedCoin}
+            selectedStock={selectedStock}
         />
 
         <MakeTransaction
             selectedCoin={selectedStock}
             selectedSymbol={selectedCoin}
-          coinList={stocks}
-          onChangeSelectedSymbol={setSelectedCoin}
+            coinList={stocks}
+            onChangeSelectedSymbol={setSelectedCoin}
         />
       </div>
     </div>
