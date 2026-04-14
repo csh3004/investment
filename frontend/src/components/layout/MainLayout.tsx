@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import MainHeader from '../Header'; // 파일명은 Header.tsx 이지만 export name은 MainHeader
 
 interface LayoutProps {
-    children: React.ReactNode;  // 각 페이지의 알맹이가 들어옴.
+    children: React.ReactNode;
 }
 
 const MainLayout: React.FC<LayoutProps> = ({ children }) => {
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem('theme') || 'dark';
+    });
+
+    useEffect(() => {
+        const root = window.document.documentElement;
+        if (theme === 'light') {
+            root.classList.remove('dark');
+        } else {
+            root.classList.add('dark');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    };
+
     return (
-        /**
-         * min-h-screen: 최소 화면 높이
-         * bg-white drak:bg-[#121212]: 흰색 배경 (기본), 다크모드일 때 #121212 배경
-         * text-gray-900 dark:text-white: 회색 900 텍스트 (기본), 다크모드일 때 흰색 텍스트
-         * transition-colors duration-300: 색상 전환 효과 (300ms)
-         */
-        <div className="min-h-screen w-full flex flex-col bg-white drak:bg-[#121212] text-gray-900 dark:text-white transition-colors duration-300">
-            <main className="flex items-center justify-center p-0">
-                {children}
-            </main>
+        <div className="min-h-screen bg-[#fafafa] dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col font-sans relative transition-colors duration-300">
+            {/* MainHeader 사용 */}
+            <MainHeader theme={theme} toggleTheme={toggleTheme} />
+            {children}
         </div>
     );
 };
