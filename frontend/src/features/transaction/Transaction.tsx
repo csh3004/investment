@@ -12,7 +12,26 @@ const TransationForm: React.FC = () => {
     () => stocks.find((stock) => stock.name === selectedCoin),
     [stocks, selectedCoin]
     );
+
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem('theme') || 'dark';
+    });
+
+    const toggleTheme = () => {
+        setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+    };
     
+     useEffect(() => {
+        const root = window.document.documentElement;
+        if (theme === 'light') {
+            root.classList.remove('dark');
+        } else {
+            root.classList.add('dark');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+    
+
     useEffect(() => {
         setSelectedCoin('BTC');
     }, []);
@@ -20,7 +39,7 @@ const TransationForm: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <div className="flex items-center justify-between mb-6">
-        <MainHeader />
+        <MainHeader theme={theme} toggleTheme={toggleTheme} />
       </div>
 
       <div className="grid grid-cols-3 gap-6 mb-6">
