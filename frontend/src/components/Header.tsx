@@ -6,6 +6,14 @@ interface HeaderProps {
 }
 
 const MainHeader: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
+import { useNavigate } from 'react-router-dom';
+
+const MainHeader = function () {
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
     return (
         <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10">
             {/* 로고 영역 */}
@@ -28,6 +36,9 @@ const MainHeader: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
                     {theme === 'light' ? 'L' : 'D'}
                 </button>
                 <button className="w-20 h-6 bg-gray-800 dark:bg-gray-100 text-white dark:text-black rounded px-2 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                <span>KRW</span>
+                <span className="w-8 h-6 bg-gray-700 rounded flex items-center justify-center cursor-pointer">T</span>
+                <span className="w-20 h-6 bg-gray-700 rounded px-2 flex items-center justify-center cursor-pointer" onClick={handleLoginClick}>
                     로그인
                 </button>
             </div>
