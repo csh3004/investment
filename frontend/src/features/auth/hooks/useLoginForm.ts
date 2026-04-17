@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginCredentials } from '../auth';
 
-export const useLoginForm = () => {
+export const useLogInForm = () => {
     const [form, setForm] = useState<LoginCredentials>({ email: '', password: '' });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
