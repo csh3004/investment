@@ -1,12 +1,13 @@
 import React from 'react';
-import { Login } from '../../features/auth/Login';
+import { LogIn } from '../../features/auth/LogIn';
+import MainLayout from '../../components/layout/MainLayout';
 
 
 const LogInPage: React.FC = () => {
   return (
-    <div className="w-full h-full">
-      <Login />
-    </div>
+    <MainLayout>
+      <LogIn />
+    </MainLayout>
   );
 };
 
