@@ -2,6 +2,7 @@ import React from 'react';
 import CoinChart from '../chart/CoinChart';
 import { StockData } from '../../types/coin';
 import { formatPrice } from '../../utils/coinFormat';
+import { getTheme } from '../../utils/theme';
 
 interface Props {
   selectedCoin: string;
@@ -9,8 +10,9 @@ interface Props {
 }
 
 const SelectedCoinPanel: React.FC<Props> = ({ selectedCoin, selectedStock }) => {
+  const theme = getTheme();
   return (
-    <div className="bg-gray-800 rounded-2xl p-6 col-span-2">
+    <div className="border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-800 rounded-2xl p-6 col-span-2 ">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-bold">{selectedCoin} / KRW</h2>
         <div className="flex items-center gap-1 text-sm text-gray-400">
@@ -20,7 +22,7 @@ const SelectedCoinPanel: React.FC<Props> = ({ selectedCoin, selectedStock }) => 
       </div>
 
       <div className="w-full h-[500px] bg-gray-900 rounded-xl mb-6 flex items-start justify-center border-2 border-dashed border-gray-700 p-4">
-        <CoinChart symbol={selectedCoin} />
+        <CoinChart symbol={selectedCoin} theme={theme} />
       </div>
 
       <div className="space-y-2">

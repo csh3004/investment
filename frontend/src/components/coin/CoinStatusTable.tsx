@@ -14,7 +14,7 @@ const CoinStatusTable: React.FC<Props> = ({
   onChangeCoin,
 }) => {
   return (
-    <div className="bg-gray-800 rounded-2xl p-6">
+    <div className="text-slate-900 dark:text-slate-100 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-lg">코인 현황</h3>
         <select
