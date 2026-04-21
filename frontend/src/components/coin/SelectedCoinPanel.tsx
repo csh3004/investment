@@ -21,7 +21,7 @@ const SelectedCoinPanel: React.FC<Props> = ({ selectedCoin, selectedStock }) => 
         </div>
       </div>
 
-      <div className="w-full h-[500px] bg-gray-900 rounded-xl mb-6 flex items-start justify-center border-2 border-dashed border-gray-700 p-4">
+      <div className="w-full h-[500px] border-slate-200 dark:border-slate-700 rounded-xl mb-6 flex items-start justify-center border-2 border-dashed border-gray-700 p-4">
         <CoinChart symbol={selectedCoin} theme={theme} />
       </div>
 

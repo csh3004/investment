@@ -8,7 +8,6 @@ interface CoinChartProps {
 
 const CoinChart: React.FC<CoinChartProps> = ({ symbol, theme}) => {
   const container = useRef<HTMLDivElement>(null);
-  console.log(theme);
   useEffect(() => {
     if (!symbol || !container.current) return;
 
@@ -22,12 +21,14 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol, theme}) => {
     if (oldContainer) oldContainer.remove();
 
     const tvSymbol = `BINANCE:${symbol.toUpperCase()}USDT`; // 예: BINANCE:BTCUSDT
+    const backgroundColor = theme === 'dark' ? "#0F0F0F" : "#FFFFFF";
+    const gridColor = theme === 'dark' ? "rgba(242, 242, 242, 0.06)" : "rgba(46, 46, 46, 0.06)";
 
     const config = {
       autosize: true,
       symbol: tvSymbol,
       interval: 'D',
-      timezone: 'Etc/UTC',
+      timezone: 'Asia/Seoul',
       theme: theme,
       style: '1',
       locale: 'kr',
@@ -38,8 +39,8 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol, theme}) => {
       hide_volume: false,
       hotlist: false,
       save_image: true,
-      backgroundColor: '#0F0F0F',
-      gridColor: 'rgba(242, 242, 242, 0.06)',
+      backgroundColor: backgroundColor,
+      gridColor: gridColor,
       watchlist: [],
       withdateranges: false,
       compareSymbols: [],
