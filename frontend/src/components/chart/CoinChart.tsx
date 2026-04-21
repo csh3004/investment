@@ -3,11 +3,12 @@ import React, { useEffect, useRef, memo } from 'react';
 
 interface CoinChartProps {
   symbol: string; // 예: "BTC", "ETH"
+  theme: string;
 }
 
-const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
+const CoinChart: React.FC<CoinChartProps> = ({ symbol, theme}) => {
   const container = useRef<HTMLDivElement>(null);
-
+  console.log(theme);
   useEffect(() => {
     if (!symbol || !container.current) return;
 
@@ -27,9 +28,9 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
       symbol: tvSymbol,
       interval: 'D',
       timezone: 'Etc/UTC',
-      theme: 'dark',
+      theme: theme,
       style: '1',
-      locale: 'en',
+      locale: 'kr',
       allow_symbol_change: true,
       hide_side_toolbar: true,
       hide_top_toolbar: false,
@@ -70,7 +71,7 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
       const el = document.getElementById(scriptId);
       if (el) el.remove();
     };
-  }, [symbol]);
+  }, [symbol, theme]);
 
   return (
     <div
