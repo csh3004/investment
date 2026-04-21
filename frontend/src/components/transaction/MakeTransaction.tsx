@@ -32,7 +32,7 @@ const MakeTransaction: React.FC<Props> = ({
 
   return (
     <div className="bg-gray-800 rounded-2xl p-6 space-y-5 w-full max-w-md">
-      <h3 className="font-bold text-lg text-white">Make Transaction</h3>
+      <h3 className="font-bold text-lg text-white">자본금 필요해서 back 만들자 얼렁</h3>
 
       <div className="space-y-2">
         <label className="block text-sm text-gray-300">현재 코인</label>
