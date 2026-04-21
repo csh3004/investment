@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogIn } from '../../features/auth/LogIn';
+import { LogIn } from '../../features/auth/Login';
 import MainLayout from '../../components/layout/MainLayout';
 
 

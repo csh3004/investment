@@ -1,6 +1,6 @@
 import React from 'react';
 import MainLayout from '../../components/layout/MainLayout';
-import { useLogInForm } from './hooks/useLogInForm';
+import { useLogInForm } from './hooks/useLoginForm';
 
 export const LogIn = () => {
   const { form, error, isLoading, handleChange, handleSubmit } = useLogInForm();
