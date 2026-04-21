@@ -14,13 +14,18 @@ const CoinStatusTable: React.FC<Props> = ({
   onChangeCoin,
 }) => {
   return (
-    <div className="bg-gray-800 rounded-2xl p-6">
+    <div className="text-slate-900 dark:text-slate-100 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-bold text-lg">코인 현황</h3>
         <select
           value={selectedCoin}
           onChange={(e) => onChangeCoin(e.target.value)}
-          className="bg-gray-700 px-3 py-1 rounded text-sm"
+          className="
+            px-3 py-1 rounded text-sm border transition-colors
+            bg-white text-slate-900 border-slate-300
+            focus:outline-none focus:ring-2 focus:ring-sky-500
+            dark:bg-slate-700 dark:text-slate-100 dark:border-slate-600
+          "
         >
           <option value="BTC">BTC</option>
           <option value="ETH">ETH</option>
