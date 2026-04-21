@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../pages/login/LogIn'; // 상대 경로로 우선 작성 (에러 방지)
 import SignUpPage from '../pages/singup/SignUp';
-import MainPage from '../pages/main';
-import Transaction from '../pages/transaction';
+import MainPage from '../pages/main/MainPage';
+import TransactionPage from '../pages/transaction/TransactionPage';
 import MainLayout from '../components/layout/MainLayout';
 
 
@@ -16,7 +16,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<MainPage />} />
 
                     {/* 로그인 페이지 */}
-                    <Route path="/trade" element={<Transaction />} />
+                    <Route path="/trade" element={<TransactionPage />} />
 
                     {/* 로그인 페이지 */}
                     <Route path="/login" element={<LoginPage />} />

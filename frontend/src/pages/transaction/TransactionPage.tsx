@@ -1,11 +1,12 @@
 import React from 'react';
 import TransationForm from '../../features/transaction/Transaction';
+import MainLayout from '../../components/layout/MainLayout';
 
 const Transaction: React.FC = () => {
   return (
-    <div className="w-full h-full">
+    <MainLayout>
       <TransationForm />
-    </div>
+    </MainLayout>
   );
 };
 
