@@ -3,11 +3,11 @@ import React, { useEffect, useRef, memo } from 'react';
 
 interface CoinChartProps {
   symbol: string; // 예: "BTC", "ETH"
+  theme: string;
 }
 
-const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
+const CoinChart: React.FC<CoinChartProps> = ({ symbol, theme}) => {
   const container = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!symbol || !container.current) return;
 
@@ -21,15 +21,17 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
     if (oldContainer) oldContainer.remove();
 
     const tvSymbol = `BINANCE:${symbol.toUpperCase()}USDT`; // 예: BINANCE:BTCUSDT
+    const backgroundColor = theme === 'dark' ? "#0F0F0F" : "#FFFFFF";
+    const gridColor = theme === 'dark' ? "rgba(242, 242, 242, 0.06)" : "rgba(46, 46, 46, 0.06)";
 
     const config = {
       autosize: true,
       symbol: tvSymbol,
       interval: 'D',
-      timezone: 'Etc/UTC',
-      theme: 'dark',
+      timezone: 'Asia/Seoul',
+      theme: theme,
       style: '1',
-      locale: 'en',
+      locale: 'kr',
       allow_symbol_change: true,
       hide_side_toolbar: true,
       hide_top_toolbar: false,
@@ -37,8 +39,8 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
       hide_volume: false,
       hotlist: false,
       save_image: true,
-      backgroundColor: '#0F0F0F',
-      gridColor: 'rgba(242, 242, 242, 0.06)',
+      backgroundColor: backgroundColor,
+      gridColor: gridColor,
       watchlist: [],
       withdateranges: false,
       compareSymbols: [],
@@ -70,7 +72,7 @@ const CoinChart: React.FC<CoinChartProps> = ({ symbol }) => {
       const el = document.getElementById(scriptId);
       if (el) el.remove();
     };
-  }, [symbol]);
+  }, [symbol, theme]);
 
   return (
     <div

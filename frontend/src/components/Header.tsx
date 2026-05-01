@@ -12,6 +12,11 @@ const MainHeader: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
     const handleLoginClick = () => {
         navigate('/login');
     };
+
+    const landleSingupClick = () => {
+        navigate('/signUp');
+    }
+
     return (
         <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-10">
             {/* 로고 영역 */}
@@ -33,8 +38,11 @@ const MainHeader: React.FC<HeaderProps> = ({ theme, toggleTheme }) => {
                 >
                     {theme === 'light' ? 'L' : 'D'}
                 </button>
-                <button className="w-20 h-6 bg-gray-800 dark:bg-gray-100 text-white dark:text-black rounded px-2 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                <button onClick={handleLoginClick} className="w-20 h-6 bg-gray-800 dark:bg-gray-100 text-white dark:text-black rounded px-2 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
                     로그인
+                </button>
+                <button onClick={landleSingupClick} className="w-20 h-6 bg-gray-800 dark:bg-gray-100 text-white dark:text-black rounded px-2 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity">
+                    회원가입
                 </button>
             </div>
         </header>

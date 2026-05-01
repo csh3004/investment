@@ -9,7 +9,7 @@ interface Props {
 
 const CoinRankList: React.FC<Props> = ({ stocks, onSelectCoin }) => {
   return (
-    <div className="bg-gray-800 rounded-2xl p-6 space-y-4">
+    <div className="text-slate-900 dark:text-slate-100 rounded-2xl p-6 space-y-4">
       <h3 className="font-bold text-lg">List</h3>
 
       <div className="space-y-2">
