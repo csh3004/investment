@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import SelectedCoinPanel from '../../components/coin/SelectedCoinPanel';
 import { useCoinTicker } from '../../hooks/useCoinTicker';
 import MakeTransaction from '../../components/transaction/MakeTransaction';
+import PositionList from '../../components/transaction/PositionList';
 
 const TransationForm: React.FC = () => {
   const [selectedCoin, setSelectedCoin] = useState('');
@@ -29,6 +30,7 @@ const TransationForm: React.FC = () => {
             coinList={stocks}
             onChangeSelectedSymbol={setSelectedCoin}
         />
+        <PositionList></PositionList>
       </div>
     </div>
   );

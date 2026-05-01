@@ -20,6 +20,12 @@ const MakeTransaction: React.FC<Props> = ({
   const [quantityPercent, setQuantityPercent] = useState(50);
   const [positionType, setPositionType] = useState<'LONG' | 'SHORT'>('LONG');
 
+  const create = () => {
+    console.log("진입가격 = " + entryPrice)
+    console.log("진입 포지션 = " + positionType)
+    console.log("진입 수량 = " + quantityPercent)
+  }
+
   const currentCoin = useMemo(() => {
     return coinList.find((coin) => coin.name === selectedSymbol) || selectedCoin;
   }, [coinList, selectedCoin, selectedSymbol]);
@@ -32,7 +38,7 @@ const MakeTransaction: React.FC<Props> = ({
 
   return (
     <div className="bg-gray-800 rounded-2xl p-6 space-y-5 w-full max-w-md">
-      <h3 className="font-bold text-lg text-white">자본금 필요해서 back 만들자 얼렁</h3>
+      <h3 className="font-bold text-lg text-white">포지션 생성</h3>
 
       <div className="space-y-2">
         <label className="block text-sm text-gray-300">현재 코인</label>
@@ -155,6 +161,14 @@ const MakeTransaction: React.FC<Props> = ({
           </span>
         </div>
       </div>
+
+      <button
+        type="button"
+        onClick={() => create()}
+        className="w-full cursor-pointer rounded-xl px-4 py-3 font-semibold transition-all duration-200 bg-gray-900 text-gray-300 border border-gray-700 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-lg"
+      >
+        포지션 진입
+      </button>
     </div>
   );
 };
