@@ -20,11 +20,36 @@ const MakeTransaction: React.FC<Props> = ({
   const [quantityPercent, setQuantityPercent] = useState(50);
   const [positionType, setPositionType] = useState<'LONG' | 'SHORT'>('LONG');
 
-  const create = () => {
-    console.log("진입가격 = " + entryPrice)
-    console.log("진입 포지션 = " + positionType)
-    console.log("진입 수량 = " + quantityPercent)
+const create = async () => {
+  console.log("진입가격 = " + entryPrice);
+  console.log("진입 포지션 = " + positionType);
+  console.log("진입 수량 = " + quantityPercent);
+
+  const requestBody = {
+    entryPrice,
+    positionType,
+    quantityPercent
+  };
+
+  try {
+    const response = await fetch("http://localhost:8080/position/make", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("응답 데이터 =", data);
+  } catch (error) {
+    console.error("POST 요청 실패:", error);
   }
+};
 
   const currentCoin = useMemo(() => {
     return coinList.find((coin) => coin.name === selectedSymbol) || selectedCoin;
