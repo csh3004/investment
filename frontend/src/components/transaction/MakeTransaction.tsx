@@ -24,8 +24,9 @@ const create = async () => {
   console.log("진입가격 = " + entryPrice);
   console.log("진입 포지션 = " + positionType);
   console.log("진입 수량 = " + quantityPercent);
-
+  let userID = "hoon";
   const requestBody = {
+    userID,
     entryPrice,
     positionType,
     quantityPercent
