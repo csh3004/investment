@@ -18,11 +18,19 @@ public class PositionService {
     @Transactional
     public Position savePosition(PositionRequsetDTO dto) {
         System.out.println(dto);
-        Position position = new Position(dto.getUserID(), dto.getEntryPrice(), dto.getPositionType(), dto.getQuantity());
+        Position position = new Position(dto.getUserID(), dto.getEntryPrice(), dto.getPositionType(), dto.getQuantityPercent());
         return positionRepository.save(position);
     }
 
     public List<Position> getAllPosition() {
         return positionRepository.findAll();
+    }
+
+    public void closePosition(Long positionId) {
+        if (!positionRepository.existsById(positionId)) {
+            throw new RuntimeException("해당 포지션이 없습니다. id = " + positionId);
+        }
+
+        positionRepository.deleteById(positionId);
     }
 }

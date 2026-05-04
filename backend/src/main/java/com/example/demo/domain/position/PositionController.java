@@ -29,4 +29,9 @@ public class PositionController {
     private Position make(@RequestBody PositionRequsetDTO dto){
         return positionService.savePosition(dto);
     }
+
+    @PostMapping("/close/{positionId}")
+    private void close(@PathVariable("positionId") Long positionId){
+        positionService.closePosition(positionId);
+    }
 }

@@ -13,6 +13,6 @@ public class PositionRequsetDTO {
 
     String positionType;
 
-    int quantity;
+    int quantityPercent;
 
 }

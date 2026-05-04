@@ -57,7 +57,7 @@ export const useLogInForm = () => {
                 localStorage.setItem('accessToken', mockToken);
 
                 console.log('✅ 모의 로그인 성공: 토큰 발급 및 저장 완료');
-                navigate('/'); // 로그인 성공 시 메인 대시보드로 이동
+                navigate('/trade'); // 로그인 성공 시 메인 대시보드로 이동
             } else {
                 setError('이메일 또는 비밀번호가 일치하지 않습니다.');
             }

@@ -6,6 +6,7 @@ interface Props {
   coinList?: StockData[];
   selectedSymbol: string;
   onChangeSelectedSymbol: (symbol: string) => void;
+  onPositionCreated: () => void;
 }
 
 const MakeTransaction: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const MakeTransaction: React.FC<Props> = ({
   coinList = [],
   selectedSymbol,
   onChangeSelectedSymbol,
+  onPositionCreated
 }) => {
   const [entryPrice, setEntryPrice] = useState(
     selectedCoin?.price ? String(selectedCoin.price) : ''
@@ -47,6 +49,7 @@ const create = async () => {
 
     const data = await response.json();
     console.log("응답 데이터 =", data);
+    onPositionCreated();
   } catch (error) {
     console.error("POST 요청 실패:", error);
   }
@@ -97,6 +100,7 @@ const create = async () => {
           진입 포지션 가격
         </label>
         <input
+          readOnly
           id="entry-price"
           type="number"
           value={entryPrice}
@@ -191,6 +195,7 @@ const create = async () => {
       <button
         type="button"
         onClick={() => create()}
+        
         className="w-full cursor-pointer rounded-xl px-4 py-3 font-semibold transition-all duration-200 bg-gray-900 text-gray-300 border border-gray-700 hover:bg-blue-600 hover:text-white hover:border-blue-500 hover:shadow-lg"
       >
         포지션 진입
