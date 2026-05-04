@@ -25,13 +25,13 @@ public class Position {
     private String positionType;
 
     @Column(length = 50, nullable = false)
-    private int quantity;
+    private int quantityPercent;
 
     @Builder
-    public Position(String userID, double entryPrice, String positionType, int quantity) {
+    public Position(String userID, double entryPrice, String positionType, int quantityPercent) {
         this.userID = userID;
         this.entryPrice = entryPrice;
         this.positionType = positionType;
-        this.quantity = quantity;
+        this.quantityPercent = quantityPercent;
     }
 }

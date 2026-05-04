@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import SelectedCoinPanel from '../../components/coin/SelectedCoinPanel';
 import { useCoinTicker } from '../../hooks/useCoinTicker';
 import MakeTransaction from '../../components/transaction/MakeTransaction';
@@ -7,11 +7,16 @@ import PositionList from '../../components/transaction/PositionList';
 const TransationForm: React.FC = () => {
   const [selectedCoin, setSelectedCoin] = useState('');
   const { stocks } = useCoinTicker();
+  const [positionRefreshKey, setPositionRefreshKey] = useState(0);
 
   const selectedStock = useMemo(
     () => stocks.find((stock) => stock.name === selectedCoin),
     [stocks, selectedCoin]
   );
+
+  const handlePositionCreated = useCallback(() => {
+    setPositionRefreshKey((prev) => prev + 1);
+  }, []);
 
     useEffect(() => {
         setSelectedCoin('BTC');
@@ -29,8 +34,9 @@ const TransationForm: React.FC = () => {
             selectedSymbol={selectedCoin}
             coinList={stocks}
             onChangeSelectedSymbol={setSelectedCoin}
+            onPositionCreated={handlePositionCreated}
         />
-        <PositionList></PositionList>
+        <PositionList refreshKey={positionRefreshKey} />
       </div>
     </div>
   );
