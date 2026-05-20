@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    include: secret
   datasource:
     url: jdbc:mysql://localhost:3306/invest?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${DB_USERNAME:root}  # 기본값 root

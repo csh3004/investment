@@ -1,0 +1,9 @@
+### 회원가입 API 테스트
+POST http://localhost:8080/api/auth/signup
+Content-Type: application/json
+
+{
+  "email": "test1@gmail.com",
+  "password": "mySecretPassword123!",
+  "name": "테스터"
+}
